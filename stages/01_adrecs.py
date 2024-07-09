@@ -41,14 +41,11 @@ class ADRECS(object):
                     reaction_data.to_parquet(file.split('.')[0] + '.parquet')
                 elif file.endswith('gz'):
                     with gzip.open(file, 'rb') as file_in:
-                        lines = file_in.readlines()
-                        headers = lines.pop(0)
-                        headers = re.split(r'\t+', str(headers))
-                        df = pd.DataFrame(lines, columns=headers)
-                        print (df)
-                        break
-                    # reaction_data = pd.read_csv(file, delimiter='\t')
-                    # reaction_data.to_parquet(file)
+                        lines = file_in.read().decode("utf-8").split('\n')
+                        data = [ line.split('\t') for line in lines ]
+                        headers = data.pop(0)
+                        df = pd.DataFrame(data, columns=headers)
+                        df.to_parquet(file.split('.')[0] + '.parquet')
             except Exception as e:
                 print ('Conversion Failed: %s' % e)
 
