@@ -3,17 +3,22 @@
 import re
 import os
 import gzip
+import click
 import pandas as pd
 import urllib.request
 
+
+@click.command()
+@click.option('--download_data', default=False, help='Run the downloading of the ADRECS data')
+@click.option('--process_data', default=False, help='Process the Data into parquet files')
+
 class ADRECS(object):
 
-    def __init__(self):
+    def __init__(self, parameters={}):
 
-        # self.retrieve_data()
-        self.process_data()
+        self.parameters = parameters
 
-    def retrieve_data(self):
+    def download_data(self):
 
         os.makedirs('data', exist_ok=True)
 
@@ -49,6 +54,20 @@ class ADRECS(object):
             except Exception as e:
                 print ('Conversion Failed: %s' % e)
 
+def controller(
+    download_data,
+    process_data,
+  ):
+
+  adrecs = ADRECS()
+
+  if download_data:
+      adrecs.download_data()
+  elif process_data:
+      adrecs.process_data()
+  else:
+      pass
+
 if __name__ == '__main__':
 
-    adrecs = ADRECS()
+  controller()
