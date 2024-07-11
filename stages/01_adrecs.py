@@ -1,6 +1,5 @@
 # Imports
 # -------
-import re
 import os
 import gzip
 import click
@@ -11,6 +10,20 @@ import urllib.request
 @click.option('--download_data', default=False, help='Run the downloading of the ADRECS data')
 @click.option('--process_data', default=False, help='Process the Data into parquet files')
 
+def controller(
+  download_data,
+  process_data,
+):
+
+  adrecs = ADRECS()
+
+  if download_data:
+    adrecs.download_data()
+  elif process_data:
+    adrecs.process_data()
+  else:
+    pass
+
 class ADRECS(object):
 
     def __init__(self, parameters={}):
@@ -19,7 +32,14 @@ class ADRECS(object):
 
     def download_data(self):
 
-        os.makedirs('data', exist_ok=True)
+        '''
+
+        Downloads the data stored in the ADRECS
+
+        '''
+
+        os.makedirs('cache', exist_ok=True)
+        os.makedirs('brick', exist_ok=True)
 
         data_links = {
           'drug_information.xlsx': 'http://bioinf.xmu.edu.cn/ADReCS/download/v3.3/Drug_information_v3.3.xlsx',
@@ -31,12 +51,18 @@ class ADRECS(object):
           'drug_adr_relations_with_quantitative_features.txt.gz': 'http://bioinf.xmu.edu.cn/ADReCS/download/v3.3/ADReCS_Drug_ADR_relations_quantification_v3.3.txt.gz',
         }
 
-        _ = [ urllib.request.urlretrieve(link, os.path.join('data', data)) for data, link in data_links.items() ]
+        _ = [ urllib.request.urlretrieve(link, os.path.join('cache', data)) for data, link in data_links.items() ]
 
     def process_data(self):
 
-        _, _, files = next(os.walk('data'))
-        files = [ os.path.join('data', file) for file in files ]
+        '''
+
+        Process the data stored in the ADRECS, takes in gzip and xlsx and converts to parquet
+
+        '''
+
+        _, _, files = next(os.walk('cache'))
+        files = [ os.path.join('brick', file) for file in files ]
 
         for file in files:
             try:
@@ -49,23 +75,9 @@ class ADRECS(object):
                         data = [ line.split('\t') for line in lines ]
                         headers = data.pop(0)
                         df = pd.DataFrame(data, columns=headers)
-                        df.to_parquet('../brick/' + file.split('.')[0] + '.parquet')
+                        df.to_parquet(file.split('.')[0] + '.parquet')
             except Exception as e:
                 print ('Conversion Failed: %s' % e)
-
-def controller(
-    download_data,
-    process_data,
-  ):
-
-  adrecs = ADRECS()
-
-  if download_data:
-      adrecs.download_data()
-  elif process_data:
-      adrecs.process_data()
-  else:
-      pass
 
 if __name__ == '__main__':
 
