@@ -1,2 +1,1 @@
-# How to build bricks
-
+ARECS
