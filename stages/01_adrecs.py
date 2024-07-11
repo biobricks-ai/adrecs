@@ -7,7 +7,6 @@ import click
 import pandas as pd
 import urllib.request
 
-
 @click.command()
 @click.option('--download_data', default=False, help='Run the downloading of the ADRECS data')
 @click.option('--process_data', default=False, help='Process the Data into parquet files')
@@ -50,7 +49,7 @@ class ADRECS(object):
                         data = [ line.split('\t') for line in lines ]
                         headers = data.pop(0)
                         df = pd.DataFrame(data, columns=headers)
-                        df.to_parquet(file.split('.')[0] + '.parquet')
+                        df.to_parquet('../brick/' + file.split('.')[0] + '.parquet')
             except Exception as e:
                 print ('Conversion Failed: %s' % e)
 
