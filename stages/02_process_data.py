@@ -4,8 +4,8 @@ import os
 import gzip
 import pandas as pd
 
-_, _, files = next(os.walk('cache'))
-files = [ os.path.join('cache', file) for file in files ]
+_, _, files = next(os.walk('downloads'))
+files = [ os.path.join('downloads', file) for file in files ]
 
 os.makedirs('brick', exist_ok=True)
 
