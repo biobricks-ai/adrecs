@@ -4,7 +4,6 @@ import os
 import urllib.request
 
 os.makedirs('cache', exist_ok=True)
-os.makedirs('brick', exist_ok=True)
 
 data_links = {
   'drug_information.xlsx': 'http://bioinf.xmu.edu.cn/ADReCS/download/v3.3/Drug_information_v3.3.xlsx',
