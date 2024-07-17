@@ -2,15 +2,16 @@
 # -------
 import os
 import gzip
+import pathlib
 import pandas as pd
 
-_, _, files = next(os.walk('downloads'))
-files = [ os.path.join('downloads', file) for file in files ]
+files = filter( lambda item: item.is_file(), pathlib.Path('download').rglob('*') )
 
-os.makedirs('brick', exist_ok=True)
+brick_dir = pathlib.Path('brick')
+brick_dir.mkdir(exist_ok=True)
 
 for file in files:
-
+  file = str(file)
   out_file = os.path.join('brick', file.split('/')[1].split('.')[0] + '.parquet')
 
   try:
@@ -27,6 +28,6 @@ for file in files:
               df = pd.DataFrame(data, columns=headers)
               df.to_parquet(out_file)
 
-  except Exception as e:
+  except:
       print ('ADRECS File Conversion Failed: %s' % e)
 

@@ -1,4 +1,4 @@
-urllib
 pandas
 gzip
 openpyxl
+pathlib
