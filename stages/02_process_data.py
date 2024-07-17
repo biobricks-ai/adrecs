@@ -18,13 +18,11 @@ for file in files:
     out_basename = re.sub(extensions_re, '.parquet', file.name )
     out_file = brick_dir / file.relative_to('download').with_name( out_basename )
 
-    file = str(file)
-
-    if file.endswith('xlsx'):
+    if file.match('*.xlsx'):
         reaction_data = pd.read_excel(file)
         reaction_data.to_parquet(out_file)
 
-    elif file.endswith('.txt.gz'):
+    elif file.match('*.txt.gz'):
         with gzip.open(file, 'rb') as file_in:
             lines = file_in.read().decode("utf-8").split('\n')
             data = [ line.split('\t') for line in lines ]
