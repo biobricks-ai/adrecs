@@ -1,8 +1,6 @@
 # Imports
 # -------
 import re
-import os
-import gzip
 import pathlib
 import pandas as pd
 
@@ -14,6 +12,11 @@ files = filter( lambda item: item.is_file(), pathlib.Path('download').rglob('*')
 brick_dir = pathlib.Path('brick')
 brick_dir.mkdir(exist_ok=True)
 
+files_w_neg1_NA = [
+        'ADReCS_ADR_Severity_Grade_v3.3.txt.gz',
+        'ADReCS_ADR_Frequency_v3.3.txt.gz'
+      ]
+
 for file in files:
     out_basename = re.sub(extensions_re, '.parquet', file.name )
     out_file = brick_dir / file.relative_to('download').with_name( out_basename )
@@ -23,12 +26,13 @@ for file in files:
         reaction_data.to_parquet(out_file)
 
     elif file.match('*.txt.gz'):
-        with gzip.open(file, 'rb') as file_in:
-            lines = file_in.read().decode("utf-8").split('\n')
-            data = [ line.split('\t') for line in lines ]
-            headers = data.pop(0)
-            df = pd.DataFrame(data, columns=headers)
-            df.to_parquet(out_file)
+        df = pd.read_csv(file, sep='\t', encoding='utf-8', low_memory=False)
+        if(file.name in files_w_neg1_NA):
+            df = df.replace({'-1': pd.NA, -1.0: pd.NA})
+        if(file.name == 'ADReCS_ADR_Severity_Grade_v3.3.txt.gz'):
+            for c in df.filter(regex=r'^BADD_', axis=1).columns:
+                df[c] = df[c].astype('category')
+        df.to_parquet(out_file)
 
     else:
         raise Exception('Unknown File Found: %s' % file)
