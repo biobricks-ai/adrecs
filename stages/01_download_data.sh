@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-mkdir -p . /download
+mkdir -p ./download
 
 wget -P download/ http://bioinf.xmu.edu.cn/ADReCS/download/v3.3/Drug_information_v3.3.xlsx
 wget -P download/ http://bioinf.xmu.edu.cn/ADReCS/download/v3.3/ADR_ontology_v3.3.xlsx
