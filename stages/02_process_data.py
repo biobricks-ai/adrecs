@@ -28,6 +28,9 @@ for file in files:
               df = pd.DataFrame(data, columns=headers)
               df.to_parquet(out_file)
 
+      else:
+          raise Exception('Unknown File Found: %s' % file)
+
   except:
-      print ('ADRECS File Conversion Failed: %s' % e)
+      print ('ADRECS File Conversion Failed: %s' % file)
 
