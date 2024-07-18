@@ -3,15 +3,21 @@
 
 # The complete process can be executed using:
 # dvc repro
-# If you want to force redoing the process use 
+# If you want to force redoing the process use
 # dvc repro -f
-# Individual stage can be executed using: 
+# Individual stage can be executed using:
 # dvc repro <stage>
 
 stages:
-  fetch_data:
-    cmd: python 01_adrecs.py
+  download:
+    cmd: bash stages/01_download_data.sh
     deps:
-      - ./stages/01_adrecs.py
+      - ./stages/01_download_data.sh
     outs:
-      - data/
+      - download/
+  process:
+    cmd: python3 stages/02_process_data.py
+    deps:
+      - ./stages/02_process_data.py
+    outs:
+      - brick/
