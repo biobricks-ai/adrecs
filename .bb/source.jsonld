@@ -1,0 +1,46 @@
+{
+  "@context": "../../context/source.context.jsonld",
+  "@type": "dcat:Dataset",
+  "@id": "https://biobricks.ai/bricks/adrecs",
+  "dcterms:title": "ADReCS - Adverse Drug Reaction Classification System (v3.3)",
+  "dcterms:description": "ADReCS is an ontology database for standardization and hierarchical classification of adverse drug reaction (ADR) terms, with drug information, ADR terminology, drug-ADR interactions, severity grades, frequencies and quantitative features. This brick packages ADReCS v3.3 files downloaded from bioinf.xmu.edu.cn/ADReCS (Bioinformatics-Aided Drug Discovery Group, Xiamen University). ADReCS integrates data from FAERS, DailyMed, CVAROD, SIDER 4.1, MedDRA, DrugBank and PubChem.",
+  "dcterms:license": {
+    "@id": "https://bioinf.xmu.edu.cn/ADReCS/",
+    "dcterms:title": "No redistribution license stated; site marked 'All right reserved' and content includes proprietary MedDRA (UNSTATED)"
+  },
+  "biobricks:licenseName": "UNSTATED - all rights reserved; incorporates proprietary MedDRA",
+  "biobricks:licenseClass": "unknown",
+  "biobricks:merckCommercialUse": "prohibited",
+  "biobricks:licenseEvidence": [
+    {
+      "source": "stages/01_download_data.sh",
+      "quote": "wget -P download/ http://bioinf.xmu.edu.cn/ADReCS/download/v3.3/Drug_information_v3.3.xlsx",
+      "confidence": "high"
+    },
+    {
+      "source": "https://bioinf.xmu.edu.cn/ADReCS/",
+      "quote": "Since 2014 Copyright @ Bioinformatics-Aided Drug Discovery Group, Xiamen University. All right reserved.",
+      "confidence": "high"
+    },
+    {
+      "source": "https://bioinf.xmu.edu.cn/ADReCS/ (data sources)",
+      "quote": "integrates ADR and drug information collected from public medical repositories like FAERS, DailyMed, Canada Vigilance Adverse Reaction Online Database(CVAROD), SIDER4.1, MedDRA, DrugBank, PubChem",
+      "confidence": "high"
+    }
+  ],
+  "biobricks:reviewed": false,
+  "biobricks:reviewNotes": "Determined by licensing-provenance annotation agent (Claude). Upstream confirmed from stages/01_download_data.sh: ADReCS v3.3 files from bioinf.xmu.edu.cn/ADReCS (Xiamen University). No open/redistribution license is stated on the ADReCS site; it carries an 'All right reserved' copyright notice and requests citation. Therefore dcterms:license=UNSTATED and the class is restricted (a separate license/permission would be required to redistribute), prohibited for commercial (Merck) use. Additional restriction: ADReCS explicitly incorporates MedDRA terminology (proprietary, license-controlled by ICH/MSSO) and DrugBank content (whose academic license restricts commercial redistribution), so even absent an ADReCS-level license these embedded sources bar commercial redistribution. NOTE: a Database Commons/NGDC listing tags ADReCS metadata as 'CC0', but that appears to be a generic curator tag and is contradicted by the site's own 'All rights reserved' notice and the proprietary MedDRA content - do not rely on it. Reviewer should contact the ADReCS group (appo@xmu.edu.cn) for explicit terms and confirm MedDRA/DrugBank redistribution constraints before any commercial use.",
+  "prov:wasDerivedFrom": [
+    {
+      "@type": "dcat:Dataset",
+      "@id": "https://bioinf.xmu.edu.cn/ADReCS/",
+      "dcterms:title": "ADReCS - Adverse Drug Reaction Classification System, v3.3",
+      "dcterms:license": {
+        "@id": "https://bioinf.xmu.edu.cn/ADReCS/",
+        "dcterms:title": "UNSTATED - all rights reserved"
+      },
+      "dcat:downloadURL": "http://bioinf.xmu.edu.cn/ADReCS/download/v3.3/",
+      "dcterms:publisher": "Bioinformatics-Aided Drug Discovery Group, Xiamen University"
+    }
+  ]
+}
